@@ -13,6 +13,7 @@ import (
 	waProto "go.mau.fi/whatsmeow/binary/proto"
 	"go.mau.fi/whatsmeow/store/sqlstore"
 	"go.mau.fi/whatsmeow/types/events"
+	"go.mau.fi/whatsmeow/types"
 	waLog "go.mau.fi/whatsmeow/util/log"
 	"google.golang.org/protobuf/proto"
 )
@@ -23,12 +24,12 @@ func eventHandler(evt interface{}) {
 	switch v := evt.(type) {
 	case *events.Message:
 		if !v.Info.IsFromMe {
-			if v.Message.GetConversation() != "" {
-				fmt.Println("PESAN DITERIMA!", v.Message.GetConversation())
-				client.SendMessage(v.Info.Sender, "", &waProto.Message{
-					Conversation: proto.String("Pesan ini otomatis. Anda mengirim pesan: " + v.Message.GetConversation()),
-				})
-			}
+			client.SendMessage(types.JID{
+				User:   "ganti jadi nomor yang dituju",
+				Server: types.DefaultUserServer,
+			}, "", &waProto.Message{
+				Conversation: proto.String("Pesan yang ingin disampaikan"),
+			})
 		}
 	}
 }
